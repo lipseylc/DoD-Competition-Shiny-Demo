@@ -1,0 +1,77 @@
+R Shiny Demo: DoD Competition
+========================================================
+author: L. Lipsey for DIIG
+date: May 2016
+transition: fade
+```{r, echo=FALSE}
+states <- read.csv("AllCats15.csv")
+library(ggplot2)
+```
+[Code and documentation on GitHub](https://github.com/lipseylc/DoD-Competition-Shiny-Demo)
+
+Where is DoD spending procurement money?
+========================================================
+
+
+- Where is the most money spent?
+- Where is spending most important to the state economy?
+- Where is contracting most (and least) competitive?
+
+Where is the most money spent?
+========================================================
+Top 5 states by DoD contract spending   
+2000-2014 (constant 2014 dollars)
+```{r, echo=FALSE}
+library(ggplot2)
+top5 <- states[order(states$deflated * -1),]
+top5 <- top5[1:5,]
+p <- ggplot(top5, aes(x=reorder(id,(deflated*-1)), y=(deflated / 1000000000),
+                  fill = deflated)) +
+      geom_bar(stat='identity') +
+      scale_fill_gradient(low = '#ccffcc', high = '#007700') +
+      ylab('$Billion') +
+      xlab('State') +
+      guides(fill=FALSE)
+print(p)
+      
+```
+
+Where is spending most important to the state economy?
+========================================================
+Top 5 states by defense contract economic share   
+2000-2014 (percentage of state GDP)
+```{r, echo=FALSE}
+top5 <- states[order(states$GSPpct * -1),]
+top5 <- top5[1:5,]
+p <- ggplot(top5, aes(x=reorder(id,(GSPpct*-1)), y=GSPpct,
+                  fill = GSPpct)) +
+      geom_bar(stat='identity') +
+      scale_fill_gradient(low = '#ffdf80', high = '#808000') +
+      ylab('% of state GDP') +
+      xlab('State') +
+      guides(fill=FALSE)
+print(p)
+```
+Where is the most and least competition?
+========================================================
+Top and bottom 5 states by competition rate   
+2000-2014 (percentage of multi-bid contracts)
+```{r, echo=FALSE}
+top5 <- states[order(states$PercentMultibid),]
+bottop <- rbind(top5[1:5,],top5[45:50,])
+bottop$id <- state.abb[match(bottop$id,state.name)]
+p <- ggplot(bottop, aes(x=reorder(id,(PercentMultibid*-1)),
+                        y=(PercentMultibid*100),
+                  fill = PercentMultibid)) +
+      geom_bar(stat='identity') +
+      scale_fill_gradient(low = '#800000', high = '#33cccc') +
+      ylab('Competition rate') +
+      xlab('State') +
+      guides(fill=FALSE)
+print(p)
+```
+Interactive map available!
+==========================================================
+Check out interactive map of these variables and more:
+[https://diig.shinyapps.io/DoDcompetition/](https://diig.shinyapps.io/DoDcompetition/)
+![map screenshot](Allcomp.png)
