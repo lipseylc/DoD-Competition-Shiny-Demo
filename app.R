@@ -13,7 +13,7 @@
 #     Competition.csv
 #     cb_2014_us_state_20m.dbf
 #     cb_2014_us_state_20m.shp
-#     cb_2014_us_state_20m.shx
+#     cb_2014_us_state_20m.shx from 
 #
 # To do:
 #     * Rework color scaling to
@@ -55,23 +55,28 @@ library(dplyr)
 ui <- fluidPage(
       title = "Competition in DoD Contracting 2000-2014",
       fluidRow(
-            column(5,
+            column(4,
                    helpText("This chart shows Department of Defense contract",
                             "obligations by state from 2000-2014"),
                    helpText("'Competition rate' is the percentage of",
                             "size-weighted",
                             "contracts that received two or more bids."),
+                   a("Code and documentation on GitHub", 
+                     href="https://github.com/lipseylc/DoD-Competition-Shiny-Demo")
                    # checkboxInput('allyears', 'All Years', value = TRUE),
-                   sliderInput('year', 'Fiscal Year', min=2000, max=2014,
-                        value=2000, step=1, animate = TRUE, sep="")
                   ),
             column(3,
-                   selectInput('cat', 'Category', 
-                               c("All","Products","R&D","Services")),
-                   radioButtons('disp', 'Display', c("Competition rate",
+                   radioButtons('disp', 'Displayed Variable',
+                                                     c("Competition rate",
                                                     "Spending (constant 2014 $)",
                                                     "Spending (% of state GDP)"))
-            )
+                  ),
+            column(4,
+                   selectInput('cat', 'Category', 
+                               c("All","Products","R&D","Services")),
+                   sliderInput('year', 'Fiscal Year', min=2000, max=2014,
+                               value=2000, step=1, animate = TRUE, sep="")
+                   )
             
       ),
       plotOutput('plot')
