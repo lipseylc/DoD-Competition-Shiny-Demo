@@ -1,4 +1,4 @@
-# Competition-Shiny
+# R Shiny: Department of Defense contract spending and competition
 A test of Shiny for DoD Competition data - project for DIIG and Coursera Data Products class May 2016
 
 Both UI and Server functions are contained in app.R
